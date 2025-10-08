@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume | Risvaa Phillips</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shafarik:wght@400&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Resume-specific card layout styles (keeps global palette & fonts) */
+    :root {
+      --brown: #261610;
+      --beige: #F2E4D8;
+      --accent: #8d6a50;
+      --card-radius: 12px;
+    }
+
+    main.resume-container { padding: 36px 20px; max-width: 1100px; margin: 0 auto; }
+
+    /* Top header */
+    .resume-top {
+      text-align: center;
+      margin: 8px 0 28px;
+    }
+    .resume-name {
+      font-family: 'Shafarik', serif;
+      color: var(--brown);
+      font-size: 2.4rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+    .resume-contact {
+      font-family: 'Playfair Display', serif;
+      color: var(--brown);
+      font-size: 0.95rem;
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: linear-gradient(90deg, rgba(242,228,216,0.06), rgba(242,228,216,0.02));
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+    .resume-contact span {
+      padding: 0 8px;
+      color: var(--brown);
+    }
+    .resume-contact .sep {
+      color: var(--beige);
+      background: var(--beige);
+      height: 10px;
+      width: 1px;
+      display: inline-block;
+      opacity: 0.7;
+      border-radius: 1px;
+      transform: translateY(-1px);
+      margin: 0 6px;
+    }
+
+    /* Grid of cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .resume-card {
+      background: var(--beige);
+      border-radius: var(--card-radius);
+      box-shadow: 0 10px 24px rgba(38,22,16,0.08);
+      overflow: hidden;
+      transition: transform 240ms ease, box-shadow 240ms ease;
+      border: 1px solid rgba(38,22,16,0.06);
+    }
+    .resume-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(38,22,16,0.14);
+    }
+
+    .card-header {
+      background: var(--brown);
+      color: var(--beige);
+      padding: 12px 16px;
+      font-family: 'Shafarik', serif;
+      font-weight: 400;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+    }
+
+    .card-body {
+      padding: 18px 20px 24px;
+      font-family: 'Playfair Display', serif;
+      color: var(--brown);
+      line-height: 1.85;
+      font-size: 0.98rem;
+    }
+
+    /* Divider between entries inside a card */
+    .entry {
+      padding: 8px 0;
+    }
+    .divider {
+      height: 1px;
+      background: var(--accent);
+      margin: 12px 0;
+      opacity: 0.25;
+      border-radius: 2px;
+    }
+
+    /* Make Education & Experience span both columns on larger view if desired */
+    .span-2 { grid-column: 1 / -1; }
+
+    /* Animations: slide-up on scroll (works with .fade-in.visible or script.js observer) */
+    .card-fade { opacity: 0; transform: translateY(12px); transition: opacity 700ms ease, transform 700ms ease; }
+    .card-fade.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 880px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .resume-contact { padding: 10px 16px; }
+    }
+
+    /* Small indentation style for lines (no bullets) */
+    .muted-label {
+      display: block;
+      color: rgba(38,22,16,0.7);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .entry-strong {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brown);
+    }
+
+    /* PDF Viewer Styles */
+    .pdf-viewer-actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pdf-viewer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-family: 'Shafarik', serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 300ms ease;
+      border: none;
+      cursor: pointer;
+      min-width: 160px;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pdf-viewer-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 500ms ease;
+    }
+
+    .pdf-viewer-btn:hover::before {
+      left: 100%;
+    }
+
+    .pdf-viewer-btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--beige));
+      color: var(--brown);
+      border: 2px solid var(--accent);
+      box-shadow: 0 4px 15px rgba(141,106,80,0.3);
+    }
+
+    .pdf-viewer-btn.primary:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(141,106,80,0.4);
+      background: linear-gradient(135deg, var(--beige), var(--accent));
+    }
+
+    .pdf-viewer-btn.secondary {
+      background: linear-gradient(135deg, var(--brown), #3a2418);
+      color: var(--beige);
+      border: 2px solid var(--brown);
+      box-shadow: 0 4px 15px rgba(38,22,16,0.3);
+    }
+
+    .pdf-viewer-btn.secondary:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(38,22,16,0.4);
+      background: linear-gradient(135deg, #3a2418, var(--brown));
+    }
+
+    /* Responsive PDF Viewer Button */
+    @media (max-width: 768px) {
+      .pdf-viewer-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .pdf-viewer-btn {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Me</a>
+    <a href="resume.html" class="active">Resume</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://github.com/risvaaphillips9/AiDD-risvphil-assignment05" target="_blank">GitHub Repo</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <main class="resume-container" role="main">
+    <header class="resume-top">
+      <h1 class="resume-name">RISVAA PHILLIPS</h1>
+      <div class="resume-contact" aria-label="contact information">
+        <span>risvphil@iu.edu</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span>812-837-6916</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span><a href="https://www.linkedin.com/in/risvaaphillips/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">linkedin.com/in/risvaaphillips/</a></span>
+      </div>
+      
+    </header>
+
+
+    <section class="cards-grid">
+      <!-- Education (span both columns) -->
+      <article class="resume-card span-2 card-fade fade-in" tabindex="0" aria-labelledby="edu-heading">
+        <div class="card-header" id="edu-heading">Education</div>
+        <div class="card-body">
+          <div class="entry">
+            <span class="entry-strong">Indiana University, Kelley School of Business — Master of Science in Information Systems (December 2026)</span>
+            <span class="muted-label">Awards & highlights</span>
+            <p>Graduate Assistantship & MSIS Fellowship for academic excellence. Participated in the Global IT Sourcing study abroad course in India (Spring 2026).</p>
+            <div class="divider" role="separator"></div>
+            <p><strong>Certificates (Summer 2025)</strong></p>
+            <p><em>IS Foundations</em> — IT infrastructure, data systems modeling, prototyping project, and case competition.</p>
+            <p><em>Business Foundations</em> — Strategy, finance, accounting, operations, marketing, and quantitative methods.</p>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <div class="entry">
+            <span class="entry-strong">Indiana University, Luddy School of Informatics, Computing, & Engineering — Bachelor of Science in Informatics; Minor: Human-Centered Computing (August 2025)</span>
+            <p>GPA: 3.83/4.00</p>
+            <div style="height:8px;"></div>
+            <p><strong>Undergraduate Instructor</strong> — Led peer instruction in core Python labs, strengthening foundational coding and mentoring skills.</p>
+            <p><strong>Shoemaker Scholar</strong> — Selected to lead student startups focused on technological innovation and entrepreneurship.</p>
+            <p><strong>Senior Thesis</strong> — “Challenges faced by Undergraduate Instructors and Their Impact on Student Learning.”</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Experience -->
+      <article class="resume-card card-fade fade-in" tabindex="0" aria-labelledby="exp-heading">
+        <div class="card-header" id="exp-heading">Experience</div>
+        <div class="card-body">
+          <div class="entry">
+            <span class="entry-strong">Indiana University — Luddy Pacesetter (Oct 2024 – May 2025)</span>
+            <p>Promoted inclusivity and diversity through outreach, recruitment, and retention initiatives designed to create a welcoming environment for prospective and current students.</p>
+            <p>Collaborated with faculty, staff, and student peers to highlight Luddy School academic offerings, research opportunities, and career pathways.</p>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <div class="entry">
+            <span class="entry-strong">Elite Execution — Co-Founder (Dubai, U.A.E.) (Jul 2023 – Dec 2023)</span>
+            <p>Executed a digital marketing strategy that reached 200+ potential clients and generated 30 qualified project inquiries.</p>
+            <p>Designed 20+ logo and brand systems, achieving a 95% client satisfaction rate by aligning creative direction with client needs.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Projects -->
+      <article class="resume-card card-fade fade-in" tabindex="0" aria-labelledby="proj-heading">
+        <div class="card-header" id="proj-heading">Academic Projects</div>
+        <div class="card-body">
+          <div class="entry">
+            <span class="entry-strong">Ski City Resort Management System (Jan 2025 – May 2025)</span>
+            <p>Designed and deployed a full-stack Flask &amp; MariaDB application featuring dynamic availability dashboards and real-time inventory visibility to replace manual reservation workflows.</p>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <div class="entry">
+            <span class="entry-strong">Responsive Personal Portfolio Website (Jan 2025 – May 2025)</span>
+            <p>Built an accessible, mobile-first portfolio using semantic HTML and responsive CSS with flexbox layouts and smooth scrolling behavior.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Technical Skills -->
+      <article class="resume-card card-fade fade-in" tabindex="0" aria-labelledby="skills-heading">
+        <div class="card-header" id="skills-heading">Technical Skills</div>
+        <div class="card-body">
+          <div class="entry">
+            <p><strong>Programming &amp; Data Analysis:</strong> Python, SQL, HTML/CSS, Excel, Google Data Studio, RStudio</p>
+          </div>
+          <div class="divider" role="separator"></div>
+          <div class="entry">
+            <p><strong>Web &amp; Application Development:</strong> Flask, Bootstrap, Git/GitHub, Command Line</p>
+          </div>
+          <div class="divider" role="separator"></div>
+          <div class="entry">
+            <p><strong>UX/UI &amp; Design:</strong> Figma, Adobe Creative Suite, User Research, Wireframing, Usability Testing</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Additional -->
+      <article class="resume-card span-2 card-fade fade-in" tabindex="0" aria-labelledby="add-heading">
+        <div class="card-header" id="add-heading">Additional</div>
+        <div class="card-body">
+          <div class="entry">
+            <p>Developed a phased Undergraduate Instructor Handbook for the Luddy School, integrating pedagogical strategies and feedback techniques to support 50+ instructors. The handbook is designed for modular adoption across lab courses and includes practical workflows and assessment suggestions.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <p>© <span id="year"></span> Risvaa Phillips</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+
+    // Apply simple fade-in for card elements if observer from script.js not present
+    document.addEventListener('DOMContentLoaded', function () {
+      var cards = document.querySelectorAll('.card-fade');
+      var observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      cards.forEach(c => observer.observe(c));
+    });
+
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+

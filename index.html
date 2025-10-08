@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home | Risvaa Phillips</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shafarik:wght@400&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About Me</a>
+    <a href="resume.html">Resume</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+    <a href="https://github.com/risvaaphillips9/AiDD-risvphil-assignment05" target="_blank">GitHub Repo</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <main class="container" role="main">
+    <!-- Hero Section -->
+    <section class="hero-section fade-in">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-box">
+            <h1 class="hero-heading">Hi, I'm Risvaa</h1>
+            <p class="welcome-message">Welcome to my personal website! I'm a graduate student at Indiana University pursuing an Information Systems degree.</p>
+            <p class="mission-statement">I aim to bridge the gap between technology and business by leveraging data, creativity, and innovation to build meaningful digital solutions.</p>
+            
+            <!-- Resume Button Section -->
+            <div class="resume-actions">
+              <div class="resume-button-container">
+                <a href="Phillips_Risvaa_Resume.pdf" class="resume-btn primary" download>
+                  <span class="btn-icon">⬇️</span>
+                  <span class="btn-text">Download Resume</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="images/headshot.png" alt="Risvaa Phillips headshot" class="headshot">
+        </div>
+      </div>
+    </section>
+
+    <section class="skills-section fade-in">
+      <h2>Top Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Innovation</h3>
+          <p>I often challenge myself to think outside the box and bring in an innovative aspect in my work.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Problem-Solving</h3>
+          <p>I really love to solve complex challenges because I believe every challenge takes us one step closer to becoming a successful person.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Communication</h3>
+          <p>I enjoy communicating my ideas to diverse people because it allows me to gain feedback from different perspectives.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Adaptability</h3>
+          <p>I am adaptable to work in different environments because this allows me to collaborate with people in a better way.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Constant Learning</h3>
+          <p>I really like to keep myself educated even if it is at home by learning about small things that make me curious.</p>
+        </div>
+        <div class="skill-card">
+          <h3>Leadership</h3>
+          <p>I enjoy being a leader because it allows me to take on some pressure and organize my work into small manageable tasks.</p>
+        </div>
+      </div>
+      <!-- CTAs removed as requested -->
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <p>© <span id="year"></span> Risvaa Phillips</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+
+    // Fade-in visibility for elements with .fade-in
+    document.addEventListener('DOMContentLoaded', function () {
+      var items = document.querySelectorAll('.fade-in');
+      items.forEach(function (el, idx) {
+        setTimeout(function () { el.classList.add('visible'); }, 120 * idx);
+      });
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
