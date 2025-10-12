@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Thank You | Risvaa Phillips{% endblock %}
+
+{% block content %}
+  <section class="fade-in" style="text-align:center; padding: 40px 0;">
+    <div class="checkmark-container" aria-hidden="true"><div class="checkmark"></div></div>
+    <h2>Thank you{% if name %}, {{ name }}{% endif %}! I'll be in touch soon.</h2>
+    {% if email %}
+      <p>We received your message from <strong>{{ email }}</strong>.</p>
+    {% endif %}
+    <p>Appreciate you reaching out — I typically respond within 1–2 business days.</p>
+    <a href="{{ url_for('home') }}" class="cta-button">Return to Homepage</a>
+  </section>
+{% endblock %}
+

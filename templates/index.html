@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Home | Risvaa Phillips{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero-section fade-in">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-box">
+          <h1 class="hero-heading">Hi, I'm Risvaa</h1>
+          <p class="welcome-message">Welcome to my personal website! I'm a graduate student at Indiana University pursuing an Information Systems degree.</p>
+          <p class="mission-statement">I aim to bridge the gap between technology and business by leveraging data, creativity, and innovation to build meaningful digital solutions.</p>
+
+          <div class="resume-actions">
+            <div class="resume-button-container">
+              <a href="{{ url_for('static', filename='docs/Phillips_Risvaa_Resume.pdf') }}" class="resume-btn primary" download>
+                <span class="btn-icon">⬇</span>
+                <span class="btn-text">Download Resume</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/headshot.png') }}" alt="Risvaa Phillips headshot" class="headshot">
+      </div>
+    </div>
+  </section>
+
+  <section class="skills-section fade-in">
+    <h2>Top Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Innovation</h3>
+        <p>I often challenge myself to think outside the box and bring in an innovative aspect in my work.</p>
+      </div>
+      <div class="skill-card">
+        <h3>Problem-Solving</h3>
+        <p>I really love to solve complex challenges because I believe every challenge takes us one step closer to becoming a successful person.</p>
+      </div>
+      <div class="skill-card">
+        <h3>Communication</h3>
+        <p>I enjoy communicating my ideas to diverse people because it allows me to gain feedback from different perspectives.</p>
+      </div>
+      <div class="skill-card">
+        <h3>Adaptability</h3>
+        <p>I am adaptable to work in different environments because this allows me to collaborate with people in a better way.</p>
+      </div>
+      <div class="skill-card">
+        <h3>Constant Learning</h3>
+        <p>I really like to keep myself educated even if it is at home by learning about small things that make me curious.</p>
+      </div>
+      <div class="skill-card">
+        <h3>Leadership</h3>
+        <p>I enjoy being a leader because it allows me to take on some pressure and organize my work into small manageable tasks.</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

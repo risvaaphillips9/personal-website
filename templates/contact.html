@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Contact | Risvaa Phillips{% endblock %}
+
+{% block content %}
+  <section class="fade-in">
+    <h2>Get in touch</h2>
+    <p>Email: <a href="mailto:risvphil@iu.edu">risvphil@iu.edu</a> • <a href="https://www.linkedin.com/in/risvaaphillips/" target="_blank" rel="noopener">LinkedIn</a></p>
+    <form id="contact-form" action="{{ url_for('thankyou') }}" method="get" novalidate>
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+        <small class="error" aria-live="polite"></small>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$">
+        <small class="error" aria-live="polite"></small>
+      </div>
+      <div class="form-field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        <small class="error" aria-live="polite"></small>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+{% endblock %}
+

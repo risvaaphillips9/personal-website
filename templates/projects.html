@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Projects | Risvaa Phillips{% endblock %}
+
+{% block content %}
+  <div class="projects">
+    <div class="projects-intro fade-in">
+      <h1>Projects</h1>
+      <p>
+        These are the projects I have completed during the Summer 2025 Jumpstart program prior to starting my Masters Degree in Information Systems at Indiana University
+        Bloomington. I have really enjoyed working on every project because I was able to gain the practical knowledge I require before stepping into the fast-paced environment of my graduate degree.
+      </p>
+    </div>
+
+    <div class="projects-gallery">
+      <figure class="fade-in">
+        <a href="#project-dashboard">
+          <img src="{{ url_for('static', filename='images/project1.png') }}" alt="Corporate Programs Management System" />
+          <figcaption>
+            <h3>Corporate Programs Management System</h3>
+            <p>IS Foundations — Summer 2025</p>
+          </figcaption>
+        </a>
+      </figure>
+      <figure class="fade-in">
+        <a href="#project-strategy">
+          <img src="{{ url_for('static', filename='images/project2.png') }}" alt="Global Market Entry Strategy" />
+          <figcaption>
+            <h3>Global Market Entry Strategy</h3>
+            <p>Business Foundations — Summer 2025</p>
+          </figcaption>
+        </a>
+      </figure>
+    </div>
+
+    <article id="project-dashboard" class="project-detail fade-in">
+      <h2>Corporate Programs Management System</h2>
+      <h3>Our Project</h3>
+      <p>This project required us to demonstrate a complete understanding of the information systems development lifecycle (SDLC). Our prototype focused on building a system that manages corporate training programs offered by the university. The solution enables administrators to create courses, upload student data, auto-assign students to course sections, and generate dynamic enrollment reports, all while ensuring scalability and clean data architecture.</p>
+
+      <h3>Big Points</h3>
+      <ul>
+        <li>Python Console Application: Core logic for adding courses, enrolling students, and generating reports.</li>
+        <li>HTML Interface: Fully navigational frontend allowing users to upload data files and view summaries.</li>
+        <li>PostgreSQL Database Schema: Robust relational design supporting multiple programs, cohorts, and sections with referential integrity.</li>
+        <li>Presentation Deck & Documentation: Included use case diagrams, ERD, sequence diagrams, and user stories.</li>
+      </ul>
+    </article>
+
+    <article id="project-strategy" class="project-detail fade-in">
+      <h2>Global Market Entry Strategy</h2>
+      <h3>Our Project</h3>
+      <p>The project focused on developing a comprehensive market entry strategy for a new product entering the U.S. market. Working as part of a four-person consulting team, we analyzed emerging consumer trends, benchmarked successful case studies, and identified feasible positioning strategies for a premium international product seeking entry into competitive retail and hospitality channels.</p>
+
+      <h3>Big Points</h3>
+      <ul>
+        <li>Full market and competitor analysis</li>
+        <li>Consumer segmentation profiles and persona grids</li>
+        <li>Strategic recommendations for brand positioning, partnerships, and experiential marketing</li>
+        <li>Final client presentation summarizing insights, analysis, and implementation roadmap</li>
+      </ul>
+    </article>
+  </div>
+{% endblock %}
+

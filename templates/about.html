@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}About Me | Risvaa Phillips{% endblock %}
+
+{% block content %}
+  <section class="about-hero fade-in">
+    <div class="about-hero-inner">
+      <div class="about-hero-copy">
+        <h1 class="about-title">Welcome to my Creative Space</h1>
+        <p class="about-lead">Hey, I'm Risvaa Phillips — a student with an innovative mindset who believes that technology has the power to greatly benefit society.</p>
+        <p class="about-note">- This personal website is my assignment for AIDD class at The Kelley School of Business at Indiana University.</p>
+
+        <img src="{{ url_for('static', filename='images/sample.jpg') }}" alt="sample" class="about-sample">
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section">
+    <div class="journey-inner container-flex">
+      <div class="journey-image">
+        <img src="{{ url_for('static', filename='images/tulip.jpg') }}" alt="IU campus" class="journey-img">
+      </div>
+      <div class="journey-copy">
+        <h2 class="journey-title">My Journey at IU</h2>
+        <p>Coming from Dubai to IU has been an extremely insightful journey for me because I was able to work, collaborate, and communicate with students of diverse cultures, ideas, and values.</p>
+        <p>I have been able to find my passion in technology because of the support, guidance, and resources I received here at IU. The courses I have taken are very unique and I have been able to learn and refine my technical skills through them.</p>
+        <p>This is one of my favorite pictures of IU, it is truly beautiful and the campus is so welcoming that I just knew this was my home away from home.</p>
+        <p>Being part of the IU community has taught me to go beyond boundaries and has made me realize the importance of hardwork and time management.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts-section">
+    <div class="facts-inner">
+      <h2 class="facts-title">Interesting facts about me</h2>
+      <div class="facts-grid">
+        <div class="fact-box">I enjoy doing Mixed Media Art which is a unique art form that combines different art techniques and materials into a single canvas. I resuse waste materials to create these innovative art pieces.</div>
+        <div class="fact-box">I love listening to music when I am studying because it helps me focus better.</div>
+        <div class="fact-box">I believe that ethics is the most essential principle while designing technology.</div>
+        <div class="fact-box">My dream is to help every individual in my country to receive education and healthcare services they need.</div>
+        <div class="fact-box">I write journal entries to keep memories of each meaningful day I get to live.</div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
