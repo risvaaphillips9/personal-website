@@ -1,3 +1,5 @@
+{# Thank-you page template. Extends the shared base layout.
+   Renders optional name/email values passed via query string. #}
 {% extends 'base.html' %}
 {% block title %}Thank You | Risvaa Phillips{% endblock %}
 
@@ -12,4 +14,3 @@
     <a href="{{ url_for('home') }}" class="cta-button">Return to Homepage</a>
   </section>
 {% endblock %}
-
