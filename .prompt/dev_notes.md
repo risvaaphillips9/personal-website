@@ -1,6 +1,6 @@
 # AI Development Notes (.prompt/dev_notes.md)
 
-This file documents prompts used with an AI assistant while building and refactoring the site. Each entry includes: the prompt, the AI output, and whether I accepted, modified, or rejected it. A 150+ word reflection follows at the end.
+This file documents prompts used with an AI assistant while building and refactoring the site. Each entry includes: the prompt, the AI output, and whether I accepted, modified, or rejected it. A single reflection summarizing the whole effort follows at the end.
 
 ---
 
@@ -86,11 +86,86 @@ This file documents prompts used with an AI assistant while building and refacto
 
 ---
 
-## Reflection (≈170 words)
+## Prompt 5: Add SQLite DAL and make Projects page DB‑driven
 
-AI assistance accelerated my workflow significantly. For UI polish like sticky nav behavior, hover effects, and subtle motion, the AI provided clean snippets that looked good immediately. This saved time I would have spent tuning values and researching patterns. During the Flask migration, the AI produced a solid scaffold—routes, base layout, and `url_for` usage—which let me focus on ensuring parity and organizing assets correctly.
+- Prompt
+  "Add a simple SQLite data access layer (DAL.py) with functions to init the DB, insert rows, and fetch all projects. Convert the Projects page to read from the database instead of hardcoded HTML. Seed two baseline projects so they always appear."
 
-AI also made small mistakes and omissions. Some text contained encoding glitches, and one closing tag was malformed in the generated template. The smooth‑scroll script initially assumed a single‑page setup, which didn’t fit my multi‑page structure. These issues were minor but reminded me to verify integration details and semantics.
+- AI Output
+  - Created `DAL.py` with `init_db()`, `get_all_projects()`, and `insert_project(...)` using `sqlite3`.
+  - Added `ensure_baseline_projects()` to guarantee two baseline entries.
+  - Updated `app.py` to call `init_db()` and `ensure_baseline_projects()` on startup; modified `/projects` route to pass `projects` into the template.
+  - Replaced static markup in `templates/projects.html` with a table that loops over DB rows.
 
-I balanced AI help with deliberate review and targeted edits. I accepted boilerplate and common patterns to move quickly, but I validated accessibility, link paths, and template inheritance myself. In short, AI handled the “how” for standard solutions, while I kept ownership of the “what” and “why,” ensuring the code matched my design goals and worked coherently across pages.
+- Decision
+  Accepted. Migrated content to the database while preserving my two original projects.
+
+---
+
+## Prompt 6: Add form to insert projects with image upload to static/images
+
+- Prompt
+  "Add a page to submit new projects (Title, Description, and an image). Upload should save files to `static/images/` safely and store the filename in the DB."
+
+- AI Output
+  - Added upload handling to `app.py` with `secure_filename`, `UPLOAD_FOLDER`, allowed extensions, 10MB limit, and collision‑safe naming.
+  - Created `templates/add_project.html` with a multipart form and a file input.
+  - On success, inserts the new row and redirects to `/projects`.
+
+- Decision
+  Accepted. Works well and keeps images organized in `static/images/`.
+
+---
+
+## Prompt 7: Restore Contact page and separate Add Project route
+
+- Prompt
+  "Restore the original `/contact` page that submits to `/thankyou` (GET). Move the add‑project form to `/add-project` so both exist. Update navigation accordingly."
+
+- AI Output
+  - Restored `templates/contact.html` to the original contact form.
+  - Added `/add-project` route with upload logic and created `templates/add_project.html`.
+  - Updated `templates/base.html` nav to include both Contact and Add Project.
+
+- Decision
+  Accepted. Satisfies course requirements and keeps project submission separate.
+
+---
+
+## Prompt 8: Improve Projects page visuals (bigger images, styled table)
+
+- Prompt
+  "Make the Projects page images larger and style the table to match the site theme, with mobile‑friendly layout."
+
+- AI Output
+  - Added CSS classes `.projects-table`, `.project-thumb`, `.projects-intro` in `static/css/style.css`.
+  - Updated `templates/projects.html` to use the classes and remove inline image sizing.
+  - Included responsive rules to stack rows on small screens.
+
+- Decision
+  Accepted. The page looks cleaner and images are large enough to preview.
+
+---
+
+## Prompt 9: Maintenance helpers (delete latest test project, clean orphan images)
+
+- Prompt
+  "Add a small helper to delete the most recent non‑baseline project and an optional script to remove unreferenced images from `static/images/`."
+
+- AI Output
+  - Added `DAL.delete_latest_project(exclude_titles=...)` and scripts: `scripts/delete_latest.py`, `scripts/delete_latest_and_image.py`, and `scripts/cleanup_images.py`.
+  - Cleanup script keeps baseline and any in‑use files; deletes only orphans.
+
+- Decision
+  Accepted with caution. Used it for test cleanup; ensured existing site images remained intact.
+
+---
+
+## Reflection (≈170+ words)
+
+AI assistance noticeably accelerated both design polish and structural changes. For UI work (sticky nav, hover motion, smooth scrolling), the AI provided succinct, high‑quality snippets that matched the site’s tone, reducing time spent on research and trial‑and‑error. The bigger lift—migrating from static pages to a Flask app—also benefited: a clean scaffold with routes, template inheritance, and `url_for` conventions let me focus on content parity, accessibility, and consistent styling.
+
+Introducing a SQLite DAL and converting the Projects page to be data‑driven improved maintainability: projects now live in a database, two baseline items are ensured at startup, and new projects appear instantly. Adding an upload workflow made images self‑contained within `static/images/`, with safe filenames and size/type checks. Separating the restored Contact page from the new Add Project route kept course requirements intact while clarifying intent. I also added simple maintenance helpers to remove test entries and orphan images when appropriate.
+
+There were a few lessons: be careful with file cleanup (protect known assets and verify references), and expect small integration edits (encoding and template fixes). Overall, the AI handled common “how” patterns quickly; I kept ownership of the “what” and “why,” ensuring the final result is cohesive, stable, and easy to extend.
 

@@ -1,0 +1,13 @@
+# Python virtual environment
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask instance folder (if used later)
+instance/
+
+# Local SQLite database (auto-created at runtime)
+projects.db

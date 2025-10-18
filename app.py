@@ -12,10 +12,38 @@ Routes:
     /thankyou   Simple confirmation page that echoes query params
 """
 
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect, flash
+from werkzeug.utils import secure_filename
+import os
+import DAL
 
 
 app = Flask(__name__)
+app.secret_key = "dev-secret-key"  # for flashing simple validation messages
+
+# Ensure database and table exist on startup, then guarantee baseline projects
+DAL.init_db()
+DAL.ensure_baseline_projects()
+
+# Upload config for project images
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "static", "images")
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB limit
+
+
+def allowed_file(filename: str) -> bool:
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def ensure_unique_path(directory: str, filename: str) -> str:
+    """Ensure filename is unique within directory by adding numeric suffix if needed."""
+    name, ext = os.path.splitext(filename)
+    candidate = filename
+    counter = 1
+    while os.path.exists(os.path.join(directory, candidate)):
+        candidate = f"{name}_{counter}{ext}"
+        counter += 1
+    return candidate
 
 
 @app.route("/")
@@ -38,18 +66,47 @@ def resume():
 
 @app.route("/projects")
 def projects():
-    """Render the projects page."""
-    return render_template("projects.html")
+    """Render the projects page from database entries."""
+    items = DAL.get_all_projects()
+    return render_template("projects.html", projects=items)
 
 
 @app.route("/contact")
 def contact():
-    """Render the contact page with a simple client-side validated form.
-
-    The form uses method=GET and submits to `/thankyou` to keep the
-    implementation simple and avoid backend storage.
-    """
+    """Render the original contact page that submits to /thankyou via GET."""
     return render_template("contact.html")
+
+
+@app.route("/add-project", methods=["GET", "POST"])
+def add_project():
+    """Add Project form to insert new projects (supports image upload)."""
+    if request.method == "POST":
+        title = (request.form.get("title") or "").strip()
+        description = (request.form.get("description") or "").strip()
+        file = request.files.get("image_file")
+
+        if not title or not description:
+            flash("Title and Description are required.")
+            return render_template("add_project.html"), 400
+
+        if not file or not file.filename:
+            flash("Please upload an image file.")
+            return render_template("add_project.html"), 400
+
+        raw_name = secure_filename(file.filename)
+        if not raw_name or not allowed_file(raw_name):
+            flash("Please upload an image file (png, jpg, jpeg, gif, webp).")
+            return render_template("add_project.html"), 400
+
+        os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+        unique_name = ensure_unique_path(app.config["UPLOAD_FOLDER"], raw_name)
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_name))
+
+        # Insert project and redirect to projects page
+        DAL.insert_project(title, description, unique_name)
+        return redirect(url_for("projects"))
+
+    return render_template("add_project.html")
 
 
 @app.route("/thankyou")
