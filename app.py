@@ -32,11 +32,13 @@ app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB limit
 
 
 def allowed_file(filename: str) -> bool:
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    has_dot = "." in filename
+    ext = filename.rsplit(".", 1)[1].lower() if has_dot else ""
+    return has_dot and ext in ALLOWED_EXTENSIONS
 
 
 def ensure_unique_path(directory: str, filename: str) -> str:
-    """Ensure filename is unique within directory by adding numeric suffix if needed."""
+    """Ensure a unique filename by adding a numeric suffix if needed."""
     name, ext = os.path.splitext(filename)
     candidate = filename
     counter = 1
@@ -118,7 +120,12 @@ def thankyou():
     name = request.args.get("name", "")
     email = request.args.get("email", "")
     message = request.args.get("message", "")
-    return render_template("thankyou.html", name=name, email=email, message=message)
+    return render_template(
+        "thankyou.html",
+        name=name,
+        email=email,
+        message=message,
+    )
 
 
 if __name__ == "__main__":

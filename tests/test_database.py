@@ -32,4 +32,3 @@ def test_insert_and_fetch_project(db_path: Path):
 
     projects = DAL.get_all_projects()
     assert any(p["title"] == "Test Project" for p in projects)
-

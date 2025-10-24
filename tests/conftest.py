@@ -31,4 +31,3 @@ def app_module(db_path: Path, tmp_path: Path):
 @pytest.fixture()
 def client(app_module):
     return app_module.app.test_client()
-

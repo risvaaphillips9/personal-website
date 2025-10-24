@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from typing import Iterable, List, Dict, Any, Optional, Tuple
+from typing import Iterable, List, Dict, Any, Optional
 
 # Database file path (root of project)
 DB_PATH = Path(__file__).parent / "projects.db"
@@ -33,7 +33,10 @@ def get_all_projects() -> List[Dict[str, Any]]:
     """Return all projects as a list of dicts (newest first)."""
     with _connect() as conn:
         rows = conn.execute(
-            "SELECT id, title, description, image_file_name FROM projects ORDER BY id DESC"
+            (
+                "SELECT id, title, description, image_file_name "
+                "FROM projects ORDER BY id DESC"
+            )
         ).fetchall()
         return [dict(r) for r in rows]
 
@@ -42,7 +45,10 @@ def insert_project(title: str, description: str, image_file_name: str) -> int:
     """Insert a new project and return the new row id."""
     with _connect() as conn:
         cur = conn.execute(
-            "INSERT INTO projects (title, description, image_file_name) VALUES (?, ?, ?)",
+            (
+                "INSERT INTO projects (title, description, image_file_name) "
+                "VALUES (?, ?, ?)"
+            ),
             (title, description, image_file_name),
         )
         conn.commit()
@@ -57,14 +63,21 @@ def ensure_baseline_projects() -> None:
     baseline = [
         (
             "Corporate Programs Management System",
-            "Prototype to manage corporate training programs: create courses, upload student data, "
-            "auto-assign students to sections, and generate dynamic enrollment reports.",
+            (
+                "Prototype to manage corporate training programs: create "
+                "courses, upload student data, auto-assign students to "
+                "sections, and generate dynamic enrollment reports."
+            ),
             "project1.png",
         ),
         (
             "Global Market Entry Strategy",
-            "Consulting project to develop a market entry strategy: trends analysis, competitive benchmarking, "
-            "consumer segmentation, and implementation roadmap.",
+            (
+                "Consulting project to develop a market "
+                "entry strategy: trends analysis, "
+                "competitive benchmarking, consumer segmentation, and "
+                "implementation roadmap."
+            ),
             "project2.png",
         ),
     ]
@@ -75,33 +88,38 @@ def ensure_baseline_projects() -> None:
             ).fetchone()
             if not exists:
                 conn.execute(
-                    "INSERT INTO projects (title, description, image_file_name) VALUES (?, ?, ?)",
+                    (
+                        "INSERT INTO projects (title, description, "
+                        "image_file_name) VALUES (?, ?, ?)"
+                    ),
                     (title, description, image_file_name),
                 )
         conn.commit()
 
 
-def delete_latest_project(exclude_titles: Optional[Iterable[str]] = None) -> Optional[Dict[str, Any]]:
-    """Delete the most recent project (highest id), optionally excluding titles.
+def delete_latest_project(
+    exclude_titles: Optional[Iterable[str]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Delete the most recent project, optionally excluding titles.
 
     Returns the deleted row as a dict, or None if nothing deleted.
     """
     exclude_titles = set(exclude_titles or [])
     with _connect() as conn:
         if exclude_titles:
-            row = conn.execute(
-                """
-                SELECT id, title, description, image_file_name
-                FROM projects
-                WHERE title NOT IN ({placeholders})
-                ORDER BY id DESC
-                LIMIT 1
-                """.format(placeholders=",".join(["?"] * len(exclude_titles))),
-                tuple(exclude_titles),
-            ).fetchone()
+            placeholders = ",".join(["?"] * len(exclude_titles))
+            query = (
+                "SELECT id, title, description, image_file_name "
+                "FROM projects WHERE title NOT IN (" + placeholders + ") "
+                "ORDER BY id DESC LIMIT 1"
+            )
+            row = conn.execute(query, tuple(exclude_titles)).fetchone()
         else:
             row = conn.execute(
-                "SELECT id, title, description, image_file_name FROM projects ORDER BY id DESC LIMIT 1"
+                (
+                    "SELECT id, title, description, image_file_name "
+                    "FROM projects ORDER BY id DESC LIMIT 1"
+                )
             ).fetchone()
 
         if not row:
@@ -116,7 +134,10 @@ def count_image_references(image_file_name: str) -> int:
     """Return how many projects reference the given image filename."""
     with _connect() as conn:
         (cnt,) = conn.execute(
-            "SELECT COUNT(*) FROM projects WHERE image_file_name = ?", (image_file_name,)
+            (
+                "SELECT COUNT(*) FROM projects WHERE image_file_name = ?"
+            ),
+            (image_file_name,),
         ).fetchone()
         return int(cnt)
 
@@ -124,5 +145,7 @@ def count_image_references(image_file_name: str) -> int:
 def list_image_filenames() -> List[str]:
     """Return distinct image file names referenced by projects."""
     with _connect() as conn:
-        rows = conn.execute("SELECT DISTINCT image_file_name FROM projects").fetchall()
+        rows = conn.execute(
+            "SELECT DISTINCT image_file_name FROM projects"
+        ).fetchall()
         return [r[0] for r in rows]

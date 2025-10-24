@@ -49,4 +49,3 @@ def test_add_project_success(client, app_module):
     page = client.get("/projects")
     assert page.status_code == 200
     assert "Uploaded Project" in page.get_data(as_text=True)
-
