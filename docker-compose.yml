@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    # Mount the SQLite DB and uploaded images to persist across restarts
+    volumes:
+      - ./projects.db:/app/projects.db
+      - ./static/images:/app/static/images
+    environment:
+      - FLASK_APP=app:app
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=5000
+
