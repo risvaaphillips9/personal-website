@@ -19,6 +19,7 @@ jobs:
 
     env:
       PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+      PYTEST_ADDOPTS: ""
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
@@ -38,4 +39,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        python -m pytest -q --maxfail=1
